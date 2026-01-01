@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Refit;
 using NetCorePal.Extensions.CodeAnalysis;
+using Ncp.Mom.Web.Application.Queries;
 
 // Create a minimal logger for startup
 Log.Logger = new LoggerConfiguration()
@@ -95,6 +96,12 @@ try
     builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
     builder.Services.AddKnownExceptionErrorModelInterceptor();
 
+    #endregion
+
+    #region Query
+    builder.Services.AddScoped<ProductionPlanQuery>();
+    builder.Services.AddScoped<WorkOrderQuery>();
+    builder.Services.AddScoped<RoutingQuery>();
     #endregion
 
     #region 基础设施
