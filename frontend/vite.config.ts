@@ -15,7 +15,7 @@ export default defineConfig({
     host: true,
     proxy: {
       '/api': {
-        target: 'https://localhost:7058',
+        target: 'http://localhost:5511',
         changeOrigin: true, // 解决跨域和安全问题
         secure: false, // 禁用 SSL 证书验证（开发环境中的自签名证书）
         headers: {
@@ -23,7 +23,7 @@ export default defineConfig({
         },
       },
       '/Downloads': {
-        target: 'https://localhost:7058',
+        target: 'http://localhost:5511',
         changeOrigin: true,
         secure: false,
       },

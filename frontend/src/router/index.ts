@@ -29,33 +29,38 @@ const router = createRouter({
         //   component: () => import('@/views/Dashboard.vue'),
         //   meta: { permissions: ['SystemMonitor'] }
         // },
-        ...menuRouteConfigs.map(convertToRouteConfig),
-         {
-          path: '',
-          name: 'Users',
-          component: () => import('@/views/Users.vue'),
-          meta: { permissions: ['SystemMonitor'] }
-        },
-       
+        ...menuRouteConfigs.map(convertToRouteConfig)
       ]
     }
   ]
 })
 
 // 路由守卫
-router.beforeEach((to, _, next) => {
+router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
   const permissionStore = usePermissionStore()
   
   // 如果访问登录页面且已认证，跳转到首页
   if (to.path === '/login' && authStore.isAuthenticated) {
-    next('/')
+    // 跳转到第一个有权限的菜单，如果没有则跳转到首页
+    const authorizedMenus = permissionStore.getAuthorizedMenus
+    if (authorizedMenus.length > 0) {
+      next(authorizedMenus[0].path)
+    } else {
+      next('/')
+    }
     return
   }
   
   // 如果访问注册页面且已认证，跳转到首页
   if (to.path === '/register' && authStore.isAuthenticated) {
-    next('/')
+    // 跳转到第一个有权限的菜单，如果没有则跳转到首页
+    const authorizedMenus = permissionStore.getAuthorizedMenus
+    if (authorizedMenus.length > 0) {
+      next(authorizedMenus[0].path)
+    } else {
+      next('/')
+    }
     return
   }
   
@@ -72,7 +77,21 @@ router.beforeEach((to, _, next) => {
       // 如果没有权限，尝试跳转到有权限的第一个菜单
       const authorizedMenus = permissionStore.getAuthorizedMenus
       if (authorizedMenus.length > 0) {
-        next(authorizedMenus[0].path)
+        const targetPath = authorizedMenus[0].path
+        // 防止无限循环：如果目标路径与当前路径相同，或者目标路径也是根路径且当前路径也是根路径，则跳转到登录页面
+        if (targetPath === to.path || (targetPath === '/' && to.path === '/')) {
+          // 如果目标路径是根路径，尝试找下一个有权限的菜单
+          const nextMenu = authorizedMenus.find(menu => menu.path !== '/' && menu.path !== to.path)
+          if (nextMenu) {
+            next(nextMenu.path)
+          } else {
+            // 如果所有菜单都是根路径或当前路径，跳转到登录页面
+            authStore.logout()
+            next('/login')
+          }
+        } else {
+          next(targetPath)
+        }
       } else {
         // 如果没有任何权限，跳转到登录页面
         authStore.logout()

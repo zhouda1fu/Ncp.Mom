@@ -23,6 +23,7 @@ using NetCorePal.Extensions.CodeAnalysis;
 using Ncp.Mom.Web.Application.Queries;
 using IGeekFan.AspNetCore.Knife4jUI;
 using Ncp.Mom.Web.Configuration;
+using Ncp.Mom.Web.Utils;
 
 // Create a minimal logger for startup
 Log.Logger = new LoggerConfiguration()
@@ -261,6 +262,9 @@ try
         using var scope = app.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         await dbContext.Database.MigrateAsync();
+
+        // 添加种子数据
+        app.SeedDatabase();
     }
 
 
@@ -268,10 +272,14 @@ try
     // Configure the HTTP request pipeline.
 
     app.UseStaticFiles();
-    app.UseHttpsRedirection();
     app.UseRouting();
-    // 添加 CORS 中间件
+    // 添加 CORS 中间件（必须在 UseRouting 之后，UseAuthentication 之前）
     app.UseCors("AllowAll");
+    // 在开发环境中禁用 HTTPS 重定向，避免与 CORS 预检请求冲突
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseHttpsRedirection();
+    }
     app.UseAuthentication();
     app.UseAuthorization();
 

@@ -41,14 +41,6 @@ export const menuRouteConfigs: MenuRouteConfig[] = [
     requiredPermissions: ['OrganizationUnitView', 'OrganizationUnitManagement']
   },
   {
-    path: 'logs',
-    name: 'Logs',
-    icon: 'Document',
-    displayName: '系统日志',
-    component: () => import('@/views/Logs.vue'),
-    requiredPermissions: ['LogView', 'SystemMonitor']
-  },
-  {
     path: 'profile',
     name: 'Profile',
     icon: 'User',
