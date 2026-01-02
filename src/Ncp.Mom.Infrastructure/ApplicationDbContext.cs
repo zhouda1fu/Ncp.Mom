@@ -8,6 +8,9 @@ using Ncp.Mom.Domain.AggregatesModel.WorkOrderAggregate;
 using Ncp.Mom.Domain.AggregatesModel.RoutingAggregate;
 using Ncp.Mom.Domain.AggregatesModel.ProductAggregate;
 using Ncp.Mom.Domain.AggregatesModel.WorkCenterAggregate;
+using Ncp.Mom.Domain.AggregatesModel.UserAggregate;
+using Ncp.Mom.Domain.AggregatesModel.RoleAggregate;
+using Ncp.Mom.Domain.AggregatesModel.OrganizationUnitAggregate;
 
 namespace Ncp.Mom.Infrastructure;
 
@@ -41,4 +44,10 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
     public DbSet<Routing> Routings => Set<Routing>();
     public DbSet<Product> Products => Set<Product>();
     public DbSet<WorkCenter> WorkCenters => Set<WorkCenter>();
+    public DbSet<User> Users => Set<User>();
+    public DbSet<Role> Roles => Set<Role>();
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+    public DbSet<UserRole> UserRoles => Set<UserRole>();
+    public DbSet<OrganizationUnit> OrganizationUnits => Set<OrganizationUnit>();
+    public DbSet<UserOrganizationUnit> UserOrganizationUnits => Set<UserOrganizationUnit>();
 }

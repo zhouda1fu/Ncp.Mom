@@ -46,6 +46,7 @@
     <PackageReference Include="Serilog.Sinks.OpenTelemetry" />
     <PackageReference Include="StackExchange.Redis" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="IGeekFan.AspNetCore.Knife4jUI" />
   </ItemGroup>
 
   <ItemGroup>

@@ -10,6 +10,7 @@ using Ncp.Mom.Web.Application.IntegrationEventHandlers;
 using Ncp.Mom.Web.Clients;
 using Ncp.Mom.Web.Extensions;
 using FastEndpoints;
+using FastEndpoints.Swagger;
 using Serilog;
 using Serilog.Formatting.Json;
 using Hangfire;
@@ -20,6 +21,8 @@ using Newtonsoft.Json.Serialization;
 using Refit;
 using NetCorePal.Extensions.CodeAnalysis;
 using Ncp.Mom.Web.Application.Queries;
+using IGeekFan.AspNetCore.Knife4jUI;
+using Ncp.Mom.Web.Configuration;
 
 // Create a minimal logger for startup
 Log.Logger = new LoggerConfiguration()
@@ -64,12 +67,26 @@ try
     builder.Services.AddAuthentication().AddJwtBearer(options =>
     {
         options.RequireHttpsMetadata = false;
-        options.TokenValidationParameters.ValidAudience = "netcorepal";
+        options.TokenValidationParameters.ValidAudience = "audience-y";
         options.TokenValidationParameters.ValidateAudience = true;
-        options.TokenValidationParameters.ValidIssuer = "netcorepal";
+        options.TokenValidationParameters.ValidIssuer = "issuer-x";
         options.TokenValidationParameters.ValidateIssuer = true;
     });
     builder.Services.AddNetCorePalJwt().AddRedisStore();
+
+    #endregion
+
+    #region CORS
+
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowAll", policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+    });
 
     #endregion
 
@@ -85,8 +102,26 @@ try
     #region FastEndpoints
 
     builder.Services.AddFastEndpoints(o => o.IncludeAbstractValidators = true);
+
+    builder.Services.SwaggerDocument(settings =>
+    {
+        settings.DocumentSettings = s =>
+        {
+            s.Title = "Ncp.Mom API接口文档";
+            s.Version = "v1";
+            s.Description = "Ncp.Mom API接口文档";
+
+            s.UseControllerSummaryAsTagDescription = true;
+        };
+
+        // 启用授权支持
+        settings.EnableJWTBearerAuth = true;
+    });
+
     builder.Services.Configure<JsonOptions>(o =>
         o.SerializerOptions.AddNetCorePalJsonConverters());
+
+    builder.Services.Configure<AppConfiguration>(builder.Configuration.GetSection("AppConfiguration"));
 
     #endregion
 
@@ -102,6 +137,9 @@ try
     builder.Services.AddScoped<ProductionPlanQuery>();
     builder.Services.AddScoped<WorkOrderQuery>();
     builder.Services.AddScoped<RoutingQuery>();
+    builder.Services.AddScoped<UserQuery>();
+    builder.Services.AddScoped<RoleQuery>();
+    builder.Services.AddScoped<OrganizationUnitQuery>();
     #endregion
 
     #region 基础设施
@@ -228,19 +266,26 @@ try
 
     app.UseKnownExceptionHandler();
     // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
 
     app.UseStaticFiles();
-    //app.UseHttpsRedirection();
+    app.UseHttpsRedirection();
     app.UseRouting();
+    // 添加 CORS 中间件
+    app.UseCors("AllowAll");
+    app.UseAuthentication();
     app.UseAuthorization();
 
+    #region Knife4UI
+
+    app.UseKnife4UI(c =>
+    {
+        c.RoutePrefix = "swagger";
+        c.SwaggerEndpoint("/v1/swagger.json", "v1");
+    });
+    app.UseFastEndpoints().UseSwaggerGen();
+    #endregion
+
     app.MapControllers();
-    app.UseFastEndpoints();
 
     #region SignalR
 
