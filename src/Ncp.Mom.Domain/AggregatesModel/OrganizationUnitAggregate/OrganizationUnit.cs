@@ -47,12 +47,12 @@ public class OrganizationUnit : Entity<OrganizationUnitId>, IAggregateRoot
     /// <summary>
     /// 是否删除
     /// </summary>
-    public bool IsDeleted { get; private set; } = false;
+    public Deleted IsDeleted { get; private set; } = new Deleted(false);
 
     /// <summary>
     /// 删除时间
     /// </summary>
-    public DateTimeOffset? DeletedAt { get; private set; }
+    public DeletedTime DeletedAt { get; private set; } = new DeletedTime(DateTimeOffset.UtcNow);
 
     /// <summary>
     /// 更新时间
@@ -133,9 +133,9 @@ public class OrganizationUnit : Entity<OrganizationUnitId>, IAggregateRoot
     }
 
     /// <summary>
-    /// 删除组织架构
+    /// 软删除组织架构
     /// </summary>
-    public void Delete()
+    public void SoftDelete()
     {
         if (IsDeleted)
         {
@@ -143,7 +143,6 @@ public class OrganizationUnit : Entity<OrganizationUnitId>, IAggregateRoot
         }
 
         IsDeleted = true;
-        DeletedAt = DateTimeOffset.UtcNow;
         UpdateTime = new UpdateTime(DateTimeOffset.UtcNow);
     }
 

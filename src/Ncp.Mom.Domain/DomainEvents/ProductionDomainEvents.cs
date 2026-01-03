@@ -4,6 +4,9 @@ using Ncp.Mom.Domain.AggregatesModel.RoutingAggregate;
 using Ncp.Mom.Domain.AggregatesModel.QualityInspectionAggregate;
 using Ncp.Mom.Domain.AggregatesModel.EquipmentAggregate;
 using Ncp.Mom.Domain.AggregatesModel.BomAggregate;
+using Ncp.Mom.Domain.AggregatesModel.MaterialAggregate;
+using Ncp.Mom.Domain.AggregatesModel.ProductAggregate;
+using Ncp.Mom.Domain.AggregatesModel.WorkCenterAggregate;
 
 namespace Ncp.Mom.Domain.DomainEvents;
 
@@ -36,4 +39,10 @@ public record EquipmentFaultRepairedDomainEvent(Equipment Equipment) : IDomainEv
 
 public record BomCreatedDomainEvent(Bom Bom) : IDomainEvent;
 public record BomDeactivatedDomainEvent(Bom Bom) : IDomainEvent;
+
+public record MaterialCreatedDomainEvent(Material Material) : IDomainEvent;
+
+public record ProductCreatedDomainEvent(Product Product) : IDomainEvent;
+
+public record WorkCenterCreatedDomainEvent(WorkCenter WorkCenter) : IDomainEvent;
 

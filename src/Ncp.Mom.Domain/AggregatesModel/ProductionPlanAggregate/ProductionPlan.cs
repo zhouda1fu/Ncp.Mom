@@ -25,6 +25,7 @@ public partial class ProductionPlan : Entity<ProductionPlanId>, IAggregateRoot
         PlannedStartDate = plannedStartDate;
         PlannedEndDate = plannedEndDate;
         Status = ProductionPlanStatus.Draft;
+        CreatedAt = DateTimeOffset.UtcNow;
         AddDomainEvent(new ProductionPlanCreatedDomainEvent(this));
     }
 
@@ -34,6 +35,9 @@ public partial class ProductionPlan : Entity<ProductionPlanId>, IAggregateRoot
     public DateTime PlannedStartDate { get; private set; }
     public DateTime PlannedEndDate { get; private set; }
     public ProductionPlanStatus Status { get; private set; }
+    public DateTimeOffset CreatedAt { get; init; }
+    public Deleted IsDeleted { get; private set; } = new Deleted(false);
+    public DeletedTime DeletedAt { get; private set; } = new DeletedTime(DateTimeOffset.UtcNow);
     public RowVersion RowVersion { get; private set; } = new RowVersion();
     public UpdateTime UpdateTime { get; private set; } = new UpdateTime(DateTimeOffset.UtcNow);
 
@@ -71,6 +75,18 @@ public partial class ProductionPlan : Entity<ProductionPlanId>, IAggregateRoot
 
         Status = ProductionPlanStatus.Cancelled;
         AddDomainEvent(new ProductionPlanCancelledDomainEvent(this));
+    }
+
+    /// <summary>
+    /// 软删除生产计划
+    /// </summary>
+    public void SoftDelete()
+    {
+        if (IsDeleted)
+            throw new KnownException("生产计划已经被删除");
+
+        IsDeleted = true;
+        UpdateTime = new UpdateTime(DateTimeOffset.UtcNow);
     }
 }
 

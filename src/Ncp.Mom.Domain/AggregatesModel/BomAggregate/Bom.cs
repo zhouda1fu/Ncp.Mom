@@ -21,6 +21,7 @@ public partial class Bom : Entity<BomId>, IAggregateRoot
         Version = version;
         IsActive = true;
         Items = new List<BomItem>();
+        CreatedAt = DateTimeOffset.UtcNow;
         AddDomainEvent(new BomCreatedDomainEvent(this));
     }
 
@@ -29,6 +30,9 @@ public partial class Bom : Entity<BomId>, IAggregateRoot
     public int Version { get; private set; }
     public bool IsActive { get; private set; }
     public List<BomItem> Items { get; private set; } = new();
+    public DateTimeOffset CreatedAt { get; init; }
+    public Deleted IsDeleted { get; private set; } = new Deleted(false);
+    public DeletedTime DeletedAt { get; private set; } = new DeletedTime(DateTimeOffset.UtcNow);
     public RowVersion RowVersion { get; private set; } = new RowVersion();
     public UpdateTime UpdateTime { get; private set; } = new UpdateTime(DateTimeOffset.UtcNow);
 
@@ -80,6 +84,18 @@ public partial class Bom : Entity<BomId>, IAggregateRoot
             throw new KnownException("BOM已经激活");
 
         IsActive = true;
+    }
+
+    /// <summary>
+    /// 软删除BOM
+    /// </summary>
+    public void SoftDelete()
+    {
+        if (IsDeleted)
+            throw new KnownException("BOM已经被删除");
+
+        IsDeleted = true;
+        UpdateTime = new UpdateTime(DateTimeOffset.UtcNow);
     }
 }
 

@@ -25,6 +25,7 @@ public partial class Equipment : Entity<EquipmentId>, IAggregateRoot
         WorkCenterId = workCenterId;
         Status = EquipmentStatus.Idle;
         CurrentWorkOrderId = null;
+        CreatedAt = DateTimeOffset.UtcNow;
         AddDomainEvent(new EquipmentCreatedDomainEvent(this));
     }
 
@@ -34,6 +35,9 @@ public partial class Equipment : Entity<EquipmentId>, IAggregateRoot
     public WorkCenterId? WorkCenterId { get; private set; }
     public EquipmentStatus Status { get; private set; }
     public WorkOrderId? CurrentWorkOrderId { get; private set; }
+    public DateTimeOffset CreatedAt { get; init; }
+    public Deleted IsDeleted { get; private set; } = new Deleted(false);
+    public DeletedTime DeletedAt { get; private set; } = new DeletedTime(DateTimeOffset.UtcNow);
     public RowVersion RowVersion { get; private set; } = new RowVersion();
     public UpdateTime UpdateTime { get; private set; } = new UpdateTime(DateTimeOffset.UtcNow);
 
@@ -122,6 +126,22 @@ public partial class Equipment : Entity<EquipmentId>, IAggregateRoot
         EquipmentCode = equipmentCode;
         EquipmentName = equipmentName;
         WorkCenterId = workCenterId;
+        UpdateTime = new UpdateTime(DateTimeOffset.UtcNow);
+    }
+
+    /// <summary>
+    /// 软删除设备
+    /// </summary>
+    public void SoftDelete()
+    {
+        if (IsDeleted)
+            throw new KnownException("设备已经被删除");
+
+        if (Status == EquipmentStatus.Running)
+            throw new KnownException("运行中的设备不能删除，请先释放设备");
+
+        IsDeleted = true;
+        UpdateTime = new UpdateTime(DateTimeOffset.UtcNow);
     }
 }
 

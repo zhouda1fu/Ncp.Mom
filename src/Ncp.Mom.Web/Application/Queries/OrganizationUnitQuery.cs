@@ -6,7 +6,7 @@ namespace Ncp.Mom.Web.Application.Queries;
 /// <summary>
 /// 组织架构查询DTO
 /// </summary>
-public record OrganizationUnitQueryDto(OrganizationUnitId Id, string Name, string Description, OrganizationUnitId ParentId, int SortOrder, bool IsActive, DateTimeOffset CreatedAt, DateTimeOffset? DeletedAt);
+public record OrganizationUnitQueryDto(OrganizationUnitId Id, string Name, string Description, OrganizationUnitId ParentId, int SortOrder, bool IsActive, DateTimeOffset CreatedAt, DeletedTime? DeletedAt);
 
 /// <summary>
 /// 组织架构查询输入参数

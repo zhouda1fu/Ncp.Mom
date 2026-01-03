@@ -5,6 +5,7 @@ using Ncp.Mom.Domain.AggregatesModel.WorkCenterAggregate;
 namespace Ncp.Mom.Domain.AggregatesModel.RoutingAggregate;
 
 public partial record RoutingId : IGuidStronglyTypedId;
+public partial record RoutingOperationId : IGuidStronglyTypedId;
 
 /// <summary>
 /// 工艺路线聚合根
@@ -19,6 +20,7 @@ public partial class Routing : Entity<RoutingId>, IAggregateRoot
         Name = name;
         ProductId = productId;
         Operations = new List<RoutingOperation>();
+        CreatedAt = DateTimeOffset.UtcNow;
         AddDomainEvent(new RoutingCreatedDomainEvent(this));
     }
 
@@ -26,6 +28,9 @@ public partial class Routing : Entity<RoutingId>, IAggregateRoot
     public string Name { get; private set; } = string.Empty;
     public ProductId ProductId { get; private set; }= default!;
     public List<RoutingOperation> Operations { get; private set; } = new();
+    public DateTimeOffset CreatedAt { get; init; }
+    public Deleted IsDeleted { get; private set; } = new Deleted(false);
+    public DeletedTime DeletedAt { get; private set; } = new DeletedTime(DateTimeOffset.UtcNow);
     public RowVersion RowVersion { get; private set; } = new RowVersion();
     public UpdateTime UpdateTime { get; private set; } = new UpdateTime(DateTimeOffset.UtcNow);
 
@@ -54,6 +59,19 @@ public partial class Routing : Entity<RoutingId>, IAggregateRoot
     {
         RoutingNumber = routingNumber;
         Name = name;
+        UpdateTime = new UpdateTime(DateTimeOffset.UtcNow);
+    }
+
+    /// <summary>
+    /// 软删除工艺路线
+    /// </summary>
+    public void SoftDelete()
+    {
+        if (IsDeleted)
+            throw new KnownException("工艺路线已经被删除");
+
+        IsDeleted = true;
+        UpdateTime = new UpdateTime(DateTimeOffset.UtcNow);
     }
 }
 
@@ -77,6 +95,4 @@ public class RoutingOperation : Entity<RoutingOperationId>
     public WorkCenterId WorkCenterId { get; private set; }= default!;
     public decimal StandardTime { get; private set; } // 标准工时（小时）
 }
-
-public partial record RoutingOperationId : IGuidStronglyTypedId;
 

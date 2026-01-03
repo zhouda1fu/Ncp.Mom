@@ -31,7 +31,7 @@ public class DeleteOrganizationUnitCommandHandler(IOrganizationUnitRepository or
         var organizationUnit = await organizationUnitRepository.GetAsync(request.Id, cancellationToken) ??
                                throw new KnownException($"未找到组织架构，Id = {request.Id}");
 
-        organizationUnit.Delete();
+        organizationUnit.SoftDelete();
     }
 }
 

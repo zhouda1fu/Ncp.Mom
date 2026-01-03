@@ -28,6 +28,7 @@ public partial class WorkOrder : Entity<WorkOrderId>, IAggregateRoot
         RoutingId = routingId;
         Status = WorkOrderStatus.Created;
         CompletedQuantity = 0;
+        CreatedAt = DateTimeOffset.UtcNow;
         AddDomainEvent(new WorkOrderCreatedDomainEvent(this));
     }
 
@@ -40,6 +41,9 @@ public partial class WorkOrder : Entity<WorkOrderId>, IAggregateRoot
     public WorkOrderStatus Status { get; private set; }
     public DateTime? StartTime { get; private set; }
     public DateTime? EndTime { get; private set; }
+    public DateTimeOffset CreatedAt { get; init; }
+    public Deleted IsDeleted { get; private set; } = new Deleted(false);
+    public DeletedTime DeletedAt { get; private set; } = new DeletedTime(DateTimeOffset.UtcNow);
     public RowVersion RowVersion { get; private set; } = new RowVersion();
     public UpdateTime UpdateTime { get; private set; } = new UpdateTime(DateTimeOffset.UtcNow);
 
@@ -103,6 +107,18 @@ public partial class WorkOrder : Entity<WorkOrderId>, IAggregateRoot
 
         Status = WorkOrderStatus.Cancelled;
         AddDomainEvent(new WorkOrderCancelledDomainEvent(this));
+    }
+
+    /// <summary>
+    /// 软删除工单
+    /// </summary>
+    public void SoftDelete()
+    {
+        if (IsDeleted)
+            throw new KnownException("工单已经被删除");
+
+        IsDeleted = true;
+        UpdateTime = new UpdateTime(DateTimeOffset.UtcNow);
     }
 }
 

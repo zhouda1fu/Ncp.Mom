@@ -23,6 +23,7 @@ public partial class QualityInspection : Entity<QualityInspectionId>, IAggregate
         QualifiedQuantity = 0;
         UnqualifiedQuantity = 0;
         Status = QualityInspectionStatus.Pending;
+        CreatedAt = DateTimeOffset.UtcNow;
         AddDomainEvent(new QualityInspectionCreatedDomainEvent(this));
     }
 
@@ -33,6 +34,9 @@ public partial class QualityInspection : Entity<QualityInspectionId>, IAggregate
     public int UnqualifiedQuantity { get; private set; }
     public QualityInspectionStatus Status { get; private set; }
     public string? Remark { get; private set; }
+    public DateTimeOffset CreatedAt { get; init; }
+    public Deleted IsDeleted { get; private set; } = new Deleted(false);
+    public DeletedTime DeletedAt { get; private set; } = new DeletedTime(DateTimeOffset.UtcNow);
     public RowVersion RowVersion { get; private set; } = new RowVersion();
     public UpdateTime UpdateTime { get; private set; } = new UpdateTime(DateTimeOffset.UtcNow);
 
@@ -66,6 +70,18 @@ public partial class QualityInspection : Entity<QualityInspectionId>, IAggregate
             throw new KnownException("只能开始待检验状态的质检单");
 
         Status = QualityInspectionStatus.InProgress;
+    }
+
+    /// <summary>
+    /// 软删除质检单
+    /// </summary>
+    public void SoftDelete()
+    {
+        if (IsDeleted)
+            throw new KnownException("质检单已经被删除");
+
+        IsDeleted = true;
+        UpdateTime = new UpdateTime(DateTimeOffset.UtcNow);
     }
 }
 
