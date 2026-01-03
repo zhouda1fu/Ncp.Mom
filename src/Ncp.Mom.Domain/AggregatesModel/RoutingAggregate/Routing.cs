@@ -46,6 +46,15 @@ public partial class Routing : Entity<RoutingId>, IAggregateRoot
             Operations.Remove(operation);
         }
     }
+
+    /// <summary>
+    /// 更新工艺路线信息
+    /// </summary>
+    public void UpdateInfo(string routingNumber, string name)
+    {
+        RoutingNumber = routingNumber;
+        Name = name;
+    }
 }
 
 /// <summary>

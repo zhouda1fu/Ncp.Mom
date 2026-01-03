@@ -26,7 +26,7 @@ public class ProductionPlanQuery(ApplicationDbContext applicationDbContext) : IQ
         }
 
         return await queryable
-            .OrderByDescending(p => p.UpdateTime.Value)
+            .OrderByDescending(p => p.Id)
             .Select(p => new ProductionPlanDto(
                 p.Id,
                 p.PlanNumber,

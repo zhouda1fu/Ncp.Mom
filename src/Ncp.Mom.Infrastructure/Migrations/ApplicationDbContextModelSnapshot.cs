@@ -22,6 +22,44 @@ namespace Ncp.Mom.Infrastructure.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("Ncp.Mom.Domain.AggregatesModel.BomAggregate.Bom", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("BomNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("RowVersion")
+                        .IsConcurrencyToken()
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("UpdateTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BomNumber")
+                        .IsUnique();
+
+                    b.HasIndex("IsActive");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Bom", (string)null);
+                });
+
             modelBuilder.Entity("Ncp.Mom.Domain.AggregatesModel.DeliverAggregate.DeliverRecord", b =>
                 {
                     b.Property<Guid>("Id")
@@ -33,6 +71,99 @@ namespace Ncp.Mom.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("deliverrecord", (string)null);
+                });
+
+            modelBuilder.Entity("Ncp.Mom.Domain.AggregatesModel.EquipmentAggregate.Equipment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("CurrentWorkOrderId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("EquipmentCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("EquipmentName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("EquipmentType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<int>("RowVersion")
+                        .IsConcurrencyToken()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<DateTimeOffset>("UpdateTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid?>("WorkCenterId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrentWorkOrderId");
+
+                    b.HasIndex("EquipmentCode")
+                        .IsUnique();
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("WorkCenterId");
+
+                    b.ToTable("Equipment", (string)null);
+                });
+
+            modelBuilder.Entity("Ncp.Mom.Domain.AggregatesModel.MaterialAggregate.Material", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("MaterialCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("MaterialName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<int>("RowVersion")
+                        .IsConcurrencyToken()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Specification")
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<DateTimeOffset>("UpdateTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaterialCode")
+                        .IsUnique();
+
+                    b.HasIndex("MaterialName");
+
+                    b.ToTable("Material", (string)null);
                 });
 
             modelBuilder.Entity("Ncp.Mom.Domain.AggregatesModel.OrderAggregate.Order", b =>
@@ -132,7 +263,9 @@ namespace Ncp.Mom.Infrastructure.Migrations
                     b.HasIndex("ProductCode")
                         .IsUnique();
 
-                    b.ToTable("product", (string)null);
+                    b.HasIndex("ProductName");
+
+                    b.ToTable("Product", (string)null);
                 });
 
             modelBuilder.Entity("Ncp.Mom.Domain.AggregatesModel.ProductionPlanAggregate.ProductionPlan", b =>
@@ -175,6 +308,56 @@ namespace Ncp.Mom.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("production_plan", (string)null);
+                });
+
+            modelBuilder.Entity("Ncp.Mom.Domain.AggregatesModel.QualityInspectionAggregate.QualityInspection", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("InspectionNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int>("QualifiedQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<int>("RowVersion")
+                        .IsConcurrencyToken()
+                        .HasColumnType("int");
+
+                    b.Property<int>("SampleQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<int>("UnqualifiedQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("UpdateTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("WorkOrderId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InspectionNumber")
+                        .IsUnique();
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("WorkOrderId");
+
+                    b.ToTable("QualityInspection", (string)null);
                 });
 
             modelBuilder.Entity("Ncp.Mom.Domain.AggregatesModel.RoleAggregate.Role", b =>
@@ -467,7 +650,9 @@ namespace Ncp.Mom.Infrastructure.Migrations
                     b.HasIndex("WorkCenterCode")
                         .IsUnique();
 
-                    b.ToTable("work_center", (string)null);
+                    b.HasIndex("WorkCenterName");
+
+                    b.ToTable("WorkCenter", (string)null);
                 });
 
             modelBuilder.Entity("Ncp.Mom.Domain.AggregatesModel.WorkOrderAggregate.WorkOrder", b =>
@@ -631,6 +816,41 @@ namespace Ncp.Mom.Infrastructure.Migrations
                         .HasDatabaseName("IX_Version_ExpiresAt_StatusName1");
 
                     b.ToTable("CAPReceivedMessage", (string)null);
+                });
+
+            modelBuilder.Entity("Ncp.Mom.Domain.AggregatesModel.BomAggregate.Bom", b =>
+                {
+                    b.OwnsMany("Ncp.Mom.Domain.AggregatesModel.BomAggregate.BomItem", "Items", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("char(36)");
+
+                            b1.Property<Guid>("BomId")
+                                .HasColumnType("char(36)");
+
+                            b1.Property<Guid>("MaterialId")
+                                .HasColumnType("char(36)");
+
+                            b1.Property<decimal>("Quantity")
+                                .HasPrecision(18, 4)
+                                .HasColumnType("decimal(18,4)");
+
+                            b1.Property<string>("Unit")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("varchar(20)");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("BomId");
+
+                            b1.ToTable("BomItem", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("BomId");
+                        });
+
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Ncp.Mom.Domain.AggregatesModel.RoleAggregate.RolePermission", b =>

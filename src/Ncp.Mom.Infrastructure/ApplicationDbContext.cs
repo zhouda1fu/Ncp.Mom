@@ -11,6 +11,10 @@ using Ncp.Mom.Domain.AggregatesModel.WorkCenterAggregate;
 using Ncp.Mom.Domain.AggregatesModel.UserAggregate;
 using Ncp.Mom.Domain.AggregatesModel.RoleAggregate;
 using Ncp.Mom.Domain.AggregatesModel.OrganizationUnitAggregate;
+using Ncp.Mom.Domain.AggregatesModel.QualityInspectionAggregate;
+using Ncp.Mom.Domain.AggregatesModel.EquipmentAggregate;
+using Ncp.Mom.Domain.AggregatesModel.BomAggregate;
+using Ncp.Mom.Domain.AggregatesModel.MaterialAggregate;
 
 namespace Ncp.Mom.Infrastructure;
 
@@ -50,4 +54,8 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
     public DbSet<UserRole> UserRoles => Set<UserRole>();
     public DbSet<OrganizationUnit> OrganizationUnits => Set<OrganizationUnit>();
     public DbSet<UserOrganizationUnit> UserOrganizationUnits => Set<UserOrganizationUnit>();
+    public DbSet<QualityInspection> QualityInspections => Set<QualityInspection>();
+    public DbSet<Equipment> Equipments => Set<Equipment>();
+    public DbSet<Bom> Boms => Set<Bom>();
+    public DbSet<Material> Materials => Set<Material>();
 }

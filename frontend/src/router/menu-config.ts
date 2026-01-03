@@ -41,6 +41,70 @@ export const menuRouteConfigs: MenuRouteConfig[] = [
     requiredPermissions: ['OrganizationUnitView', 'OrganizationUnitManagement']
   },
   {
+    path: 'products',
+    name: 'Products',
+    icon: 'Box',
+    displayName: '产品管理',
+    component: () => import('@/views/Products.vue'),
+    requiredPermissions: []
+  },
+  {
+    path: 'work-centers',
+    name: 'WorkCenters',
+    icon: 'OfficeBuilding',
+    displayName: '工作中心管理',
+    component: () => import('@/views/WorkCenters.vue'),
+    requiredPermissions: []
+  },
+  {
+    path: 'production-plans',
+    name: 'ProductionPlans',
+    icon: 'Document',
+    displayName: '生产计划管理',
+    component: () => import('@/views/ProductionPlans.vue'),
+    requiredPermissions: []
+  },
+  {
+    path: 'work-orders',
+    name: 'WorkOrders',
+    icon: 'Tickets',
+    displayName: '工单管理',
+    component: () => import('@/views/WorkOrders.vue'),
+    requiredPermissions: []
+  },
+  {
+    path: 'quality-inspections',
+    name: 'QualityInspections',
+    icon: 'DocumentChecked',
+    displayName: '质量管理',
+    component: () => import('@/views/QualityInspections.vue'),
+    requiredPermissions: []
+  },
+  {
+    path: 'equipments',
+    name: 'Equipments',
+    icon: 'Setting',
+    displayName: '设备管理',
+    component: () => import('@/views/Equipments.vue'),
+    requiredPermissions: []
+  },
+  {
+    path: 'boms',
+    name: 'Boms',
+    icon: 'List',
+    displayName: 'BOM管理',
+    component: () => import('@/views/Boms.vue'),
+    requiredPermissions: []
+  },
+  {
+    path: 'materials',
+    name: 'Materials',
+    icon: 'Box',
+    displayName: '物料管理',
+    component: () => import('@/views/Materials.vue'),
+    requiredPermissions: []
+  },
+  {
     path: 'profile',
     name: 'Profile',
     icon: 'User',

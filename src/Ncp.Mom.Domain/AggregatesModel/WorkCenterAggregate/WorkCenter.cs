@@ -20,5 +20,14 @@ public partial class WorkCenter : Entity<WorkCenterId>, IAggregateRoot
 
     public string WorkCenterCode { get; private set; } = string.Empty;
     public string WorkCenterName { get; private set; } = string.Empty;
+
+    /// <summary>
+    /// 更新工作中心信息
+    /// </summary>
+    public void UpdateInfo(string workCenterCode, string workCenterName)
+    {
+        WorkCenterCode = workCenterCode;
+        WorkCenterName = workCenterName;
+    }
 }
 

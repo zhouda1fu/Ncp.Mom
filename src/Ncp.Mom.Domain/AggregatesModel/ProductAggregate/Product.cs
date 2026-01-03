@@ -20,5 +20,14 @@ public partial class Product : Entity<ProductId>, IAggregateRoot
 
     public string ProductCode { get; private set; } = string.Empty;
     public string ProductName { get; private set; } = string.Empty;
+
+    /// <summary>
+    /// 更新产品信息
+    /// </summary>
+    public void UpdateInfo(string productCode, string productName)
+    {
+        ProductCode = productCode;
+        ProductName = productName;
+    }
 }
 

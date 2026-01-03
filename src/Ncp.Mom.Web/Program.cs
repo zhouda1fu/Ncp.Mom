@@ -141,6 +141,12 @@ try
     builder.Services.AddScoped<UserQuery>();
     builder.Services.AddScoped<RoleQuery>();
     builder.Services.AddScoped<OrganizationUnitQuery>();
+    builder.Services.AddScoped<ProductQuery>();
+    builder.Services.AddScoped<WorkCenterQuery>();
+    builder.Services.AddScoped<MaterialQuery>();
+    builder.Services.AddScoped<BomQuery>();
+    builder.Services.AddScoped<EquipmentQuery>();
+    builder.Services.AddScoped<QualityInspectionQuery>();
     #endregion
 
     #region 基础设施

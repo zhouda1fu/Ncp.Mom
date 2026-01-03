@@ -31,7 +31,7 @@ public class WorkOrderQuery(ApplicationDbContext applicationDbContext) : IQuery
         }
 
         return await queryable
-            .OrderByDescending(w => w.UpdateTime.Value)
+            .OrderByDescending(w => w.Id)
             .Select(w => new WorkOrderDto(
                 w.Id,
                 w.WorkOrderNumber,
