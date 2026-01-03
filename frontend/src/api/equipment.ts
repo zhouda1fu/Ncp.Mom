@@ -70,14 +70,14 @@ export const equipmentApi = {
 
   // 释放设备
   releaseEquipment: (id: string) =>
-    api.post(`/equipments/${id}/release`),
+    api.post(`/equipments/${id}/release`, {}),
 
   // 开始维护
   startMaintenance: (id: string) =>
-    api.post(`/equipments/${id}/start-maintenance`),
+    api.post(`/equipments/${id}/start-maintenance`, {}),
 
   // 完成维护
   completeMaintenance: (id: string) =>
-    api.post(`/equipments/${id}/complete-maintenance`)
+    api.post(`/equipments/${id}/complete-maintenance`, {})
 }
 

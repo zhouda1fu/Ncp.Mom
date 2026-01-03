@@ -62,19 +62,19 @@ export const workOrderApi = {
 
   // 启动工单
   startWorkOrder: (id: string) =>
-    api.post(`/work-orders/${id}/start`),
+    api.post(`/work-orders/${id}/start`, {}),
 
   // 暂停工单
   pauseWorkOrder: (id: string) =>
-    api.post<boolean>(`/work-orders/${id}/pause`),
+    api.post<boolean>(`/work-orders/${id}/pause`, {}),
 
   // 恢复工单
   resumeWorkOrder: (id: string) =>
-    api.post<boolean>(`/work-orders/${id}/resume`),
+    api.post<boolean>(`/work-orders/${id}/resume`, {}),
 
   // 取消工单
   cancelWorkOrder: (id: string) =>
-    api.post<boolean>(`/work-orders/${id}/cancel`),
+    api.post<boolean>(`/work-orders/${id}/cancel`, {}),
 
   // 报工
   reportProgress: (data: ReportProgressRequest) =>

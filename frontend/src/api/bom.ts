@@ -69,6 +69,6 @@ export const bomApi = {
 
   // 停用BOM
   deactivateBom: (id: string) =>
-    api.post(`/boms/${id}/deactivate`)
+    api.post(`/boms/${id}/deactivate`, {})
 }
 

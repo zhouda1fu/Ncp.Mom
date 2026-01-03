@@ -52,19 +52,19 @@ export const productionPlanApi = {
 
   // 审批生产计划
   approveProductionPlan: (id: string) =>
-    api.post(`/production-plans/${id}/approve`),
+    api.post(`/production-plans/${id}/approve`, {}),
 
   // 启动生产计划
   startProductionPlan: (id: string) =>
-    api.post(`/production-plans/${id}/start`),
+    api.post(`/production-plans/${id}/start`, {}),
 
   // 完成生产计划
   completeProductionPlan: (id: string) =>
-    api.post<boolean>(`/production-plans/${id}/complete`),
+    api.post<boolean>(`/production-plans/${id}/complete`, {}),
 
   // 取消生产计划
   cancelProductionPlan: (id: string) =>
-    api.post<boolean>(`/production-plans/${id}/cancel`),
+    api.post<boolean>(`/production-plans/${id}/cancel`, {}),
 
   // 生成工单
   generateWorkOrders: (id: string) =>

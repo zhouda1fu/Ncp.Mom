@@ -65,6 +65,14 @@ export const menuRouteConfigs: MenuRouteConfig[] = [
     requiredPermissions: []
   },
   {
+    path: 'routings',
+    name: 'Routings',
+    icon: 'Connection',
+    displayName: '工艺路线管理',
+    component: () => import('@/views/Routings.vue'),
+    requiredPermissions: []
+  },
+  {
     path: 'work-orders',
     name: 'WorkOrders',
     icon: 'Tickets',
