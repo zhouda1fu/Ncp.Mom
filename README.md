@@ -4,7 +4,7 @@
 
 ### 使用 Aspire（推荐）
 
-如果您的项目启用了 Aspire 支持（使用 `--UseAspire` 参数创建），只需要 Docker 环境即可，无需手动配置各种基础设施服务。
+项目启用了 Aspire 支持（使用 `--UseAspire` 参数创建），只需要 Docker 环境即可，无需手动配置各种基础设施服务。
 
 ```bash
 # 仅需确保 Docker 环境运行
@@ -94,6 +94,85 @@ docker run --restart unless-stopped --name netcorepal-rabbitmq -p 5672:5672 -p 1
 - **PostgreSQL**: `localhost:5432` (postgres/123456)
 - **Kafka**: `localhost:9092`
 - **Kafka UI**: http://localhost:8080
+
+## 前端开发
+
+项目包含基于 Vue 3 + TypeScript + Element Plus 的前端管理系统，位于 `frontend` 目录。
+
+### 技术栈
+
+- **Vue 3** - 渐进式 JavaScript 框架
+- **TypeScript** - JavaScript 的超集，提供类型安全
+- **Element Plus** - 基于 Vue 3 的组件库
+- **Vue Router** - Vue.js 官方路由管理器
+- **Pinia** - Vue 的状态管理库
+- **Vite** - 下一代前端构建工具
+
+### 环境要求
+
+- Node.js >= 16.0.0
+- npm >= 8.0.0
+
+### 快速开始
+
+```bash
+# 进入前端目录
+cd frontend
+
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+```
+
+开发服务器启动后，访问 http://localhost:3000 查看应用。
+
+### 构建生产版本
+
+```bash
+# 构建项目
+npm run build
+
+# 预览生产版本
+npm run preview
+```
+
+构建产物将输出到 `frontend/dist` 目录。
+
+### 其他命令
+
+```bash
+# 代码检查
+npm run lint
+
+# 代码格式化
+npm run format
+
+# TypeScript 类型检查
+npm run type-check
+```
+
+### 项目结构
+
+```
+frontend/
+├── src/
+│   ├── api/           # API 接口
+│   ├── components/    # 公共组件
+│   ├── composables/   # 组合式函数
+│   ├── layouts/       # 布局组件
+│   ├── router/        # 路由配置
+│   ├── stores/        # 状态管理
+│   ├── views/         # 页面组件
+│   └── utils/         # 工具函数
+├── index.html         # HTML 模板
+├── package.json       # 依赖配置
+├── tsconfig.json      # TypeScript 配置
+└── vite.config.ts     # Vite 配置
+```
+
+更多详细信息请参考：[frontend/README.md](frontend/README.md)
 
 ## IDE 代码片段配置
 
